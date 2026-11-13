@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Офлайн-курс Python для Windows и Android: 30 дней, 50 задач с автопроверкой, встроенный редактор и первый проект без установки Python.">
+<title>Python для дундриков — бета для Windows и Android</title>
+<link rel="icon" type="image/png" href="./favicon.png">
+<style>
+:root{
+  --bg: oklch(0.18 0.008 260);
+  --bg-soft: oklch(0.215 0.008 260);
+  --panel: oklch(0.245 0.008 260);
+  --panel-hover: oklch(0.275 0.008 260);
+  --text: oklch(0.96 0.006 95);
+  --muted: oklch(0.76 0.012 260);
+  --faint: oklch(0.64 0.012 260);
+  --line: oklch(0.36 0.01 260);
+  --accent: oklch(0.82 0.16 88);
+  --accent-hover: oklch(0.76 0.16 82);
+  --accent-text: oklch(0.25 0.04 75);
+  --success: oklch(0.76 0.15 155);
+  --radius: 16px;
+  --font: "Segoe UI", "Noto Sans", Arial, sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:88px}
+body{min-height:100dvh;background:var(--bg);color:var(--text);font:16px/1.65 var(--font);-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+img{display:block;width:100%;height:auto}
+button,a{touch-action:manipulation}
+a:focus-visible,summary:focus-visible{outline:3px solid var(--accent);outline-offset:4px;border-radius:6px}
+.container{width:min(1160px,calc(100% - 40px));margin-inline:auto}
+.topbar{position:sticky;top:0;z-index:10;background:color-mix(in oklch,var(--bg) 92%,transparent);backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}
+.nav{min-height:72px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.brand{display:flex;align-items:center;gap:12px;font-weight:750;letter-spacing:-.02em;white-space:nowrap}
+.brand-mark{display:grid;place-items:center;width:36px;height:36px;border:1px solid var(--accent);border-radius:10px;color:var(--accent);font:700 18px/1 Consolas,monospace}
+.nav-links{display:flex;align-items:center;gap:24px;color:var(--muted);font-size:14px}
+.nav-links a{min-height:44px;display:inline-flex;align-items:center;transition:color .18s ease}
+.nav-links a:hover{color:var(--text)}
+.button{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:48px;padding:12px 20px;border:1px solid transparent;border-radius:10px;font-weight:700;line-height:1.2;transition:background .18s ease,border-color .18s ease,transform .18s ease;cursor:pointer}
+.button:hover{transform:translateY(-2px)}
+.button:active{transform:translateY(0)}
+.button-primary{background:var(--accent);color:var(--accent-text)}
+.button-primary:hover{background:var(--accent-hover)}
+.button-secondary{border-color:var(--line);background:var(--panel);color:var(--text)}
+.button-secondary:hover{background:var(--panel-hover);border-color:var(--faint)}
+.button-small{min-height:44px;padding:10px 16px;font-size:14px}
+.hero{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:56px;align-items:center;padding-block:88px 72px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;color:var(--accent);font-size:13px;font-weight:750;letter-spacing:.08em;text-transform:uppercase}
+.eyebrow::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--success)}
+h1,h2,h3{line-height:1.12;letter-spacing:-.035em;text-wrap:balance}
+h1{max-width:12ch;font-size:clamp(42px,5.5vw,70px);margin:20px 0 24px}
+h2{font-size:clamp(30px,4vw,46px);margin-bottom:20px}
+h3{font-size:21px;margin-bottom:10px}
+.hero-copy{max-width:58ch;color:var(--muted);font-size:18px}
+.hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:32px}
+.hero-facts{display:flex;flex-wrap:wrap;gap:32px;margin-top:40px;padding-top:28px;border-top:1px solid var(--line)}
+.fact strong{display:block;font-size:28px;line-height:1.1;color:var(--text)}
+.fact span{display:block;margin-top:6px;color:var(--faint);font-size:13px}
+.screenshot-frame{overflow:hidden;border:1px solid var(--line);border-radius:var(--radius);background:var(--panel);box-shadow:0 28px 80px oklch(0.08 0.01 260 / .45)}
+.screenshot-bar{display:flex;align-items:center;gap:7px;padding:12px 14px;border-bottom:1px solid var(--line);color:var(--faint);font-size:12px}
+.screenshot-bar i{display:block;width:8px;height:8px;border-radius:50%;background:var(--faint)}
+.screenshot-bar i:first-child{background:var(--accent)}
+.screenshot-bar span{margin-left:6px}
+.section{padding-block:72px;border-top:1px solid var(--line)}
+.section-intro{max-width:66ch;margin-bottom:36px;color:var(--muted);font-size:17px}
+.feature-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.feature{padding:24px;border:1px solid var(--line);border-radius:var(--radius);background:var(--panel)}
+.feature-icon{display:grid;place-items:center;width:42px;height:42px;margin-bottom:22px;border:1px solid var(--line);border-radius:10px;color:var(--accent);font:700 17px/1 Consolas,monospace}
+.feature p{color:var(--muted);font-size:15px}
+.split{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:48px;align-items:center}
+.split.reverse{grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr)}
+.checklist{list-style:none;display:grid;gap:16px;margin-top:28px}
+.checklist li{position:relative;padding-left:28px;color:var(--muted)}
+.checklist li::before{content:"✓";position:absolute;left:0;color:var(--success);font-weight:800}
+.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;counter-reset:step}
+.step{padding:26px;border-top:2px solid var(--accent);background:var(--bg-soft);counter-increment:step}
+.step::before{content:"0" counter(step);display:block;margin-bottom:18px;color:var(--accent);font:700 14px/1 Consolas,monospace}
+.step p{color:var(--muted);font-size:15px}
+.download-box{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:32px;align-items:center;padding:36px;border:1px solid var(--accent);border-radius:var(--radius);background:var(--bg-soft)}
+.download-box p{max-width:62ch;color:var(--muted)}
+.download-meta{margin-top:14px;color:var(--faint);font-size:13px}
+.faq{display:grid;gap:10px}
+details{border-bottom:1px solid var(--line)}
+summary{min-height:56px;display:flex;align-items:center;justify-content:space-between;gap:16px;font-weight:700;cursor:pointer;list-style:none}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";color:var(--accent);font-size:24px;font-weight:400}
+details[open] summary::after{content:"−"}
+details p{max-width:75ch;padding:0 0 20px;color:var(--muted)}
+footer{padding:32px 0 48px;border-top:1px solid var(--line);color:var(--faint);font-size:14px}
+.footer-inner{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap}
+@media (max-width:960px){
+  .hero,.split,.split.reverse{grid-template-columns:1fr;gap:36px}
+  .feature-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .hero{padding-top:56px}
+  .split.reverse .screenshot-frame{order:-1}
+}
+@media (max-width:640px){
+  .container{width:min(100% - 28px,1160px)}
+  .nav{gap:12px}
+  .nav-links{gap:12px}
+  .nav-links a:not(.button){display:none}
+  .brand{font-size:14px}
+  .hero{padding-block:40px 48px;gap:36px}
+  h1{font-size:42px}
+  .hero-copy{font-size:16px}
+  .hero-actions{display:grid;grid-template-columns:1fr}
+  .hero-facts{gap:20px}
+  .section{padding-block:52px}
+  .feature-grid,.steps{grid-template-columns:1fr}
+  .download-box{grid-template-columns:1fr;padding:26px}
+  .download-box .button{width:100%}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{transition:none!important;animation:none!important}
+}
+</style>
+  <script type="module" crossorigin src="/assets/index-B5cNWVwt.js"></script>
+</head>
+<body>
+<header class="topbar">
+  <div class="container nav">
+    <a class="brand" href="#top" aria-label="Python для дундриков — на главную">
+      <span class="brand-mark" aria-hidden="true">Py</span>
+      <span>Python для дундриков</span>
+    </a>
+    <nav class="nav-links" aria-label="Основная навигация">
+      <a href="#features">Возможности</a>
+      <a href="#android">Android</a>
+      <a href="#learning">Как учиться</a>
+      <a href="#faq">Вопросы</a>
+      <a class="button button-primary button-small" href="./downloads/Python30_Beta_Setup.exe" download>Скачать</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <section class="container hero" aria-labelledby="hero-title">
+    <div>
+      <span class="eyebrow">Бесплатная бета для Windows и Android</span>
+      <h1 id="hero-title">От первой строки до своего проекта. За 30 дней.</h1>
+      <p class="hero-copy">Понятный курс для тех, кто никогда не программировал. Теория сразу превращается в код, а приложение само проверяет решения и помогает не застрять.</p>
+      <div class="hero-actions">
+        <a class="button button-primary" href="./downloads/Python30_Beta_Setup.exe" download>Скачать для Windows</a>
+        <a class="button button-secondary" href="#android">Скачать для Android</a>
+      </div>
+      <div class="hero-facts" aria-label="Основные особенности курса">
+        <div class="fact"><strong>30</strong><span>дней с пошаговым планом</span></div>
+        <div class="fact"><strong>50</strong><span>задач с автопроверкой</span></div>
+        <div class="fact"><strong>0</strong><span>дополнительных программ</span></div>
+      </div>
+    </div>
+    <div class="screenshot-frame">
+      <div class="screenshot-bar" aria-hidden="true"><i></i><i></i><i></i><span>Мой курс · день 5</span></div>
+      <img src="./assets/day-5-resources.png" alt="Экран пятого дня курса с кнопками главы, задач, разбора и практики" width="1475" height="900">
+    </div>
+  </section>
+
+  <section class="section" id="features" aria-labelledby="features-title">
+    <div class="container">
+      <h2 id="features-title">Не просто учебник в окне</h2>
+      <p class="section-intro">Приложение ведёт по маршруту, запускает программы, проверяет их работу и сохраняет прогресс на твоём компьютере.</p>
+      <div class="feature-grid">
+        <article class="feature"><div class="feature-icon" aria-hidden="true">01</div><h3>План по дням</h3><p>Нужные главы, разборы и задачи открываются прямо из каждого дня. Не придётся искать их вручную.</p></article>
+        <article class="feature"><div class="feature-icon" aria-hidden="true">✓</div><h3>Проверка кода</h3><p>Несколько сценариев для каждой задачи. Видно, что именно работает и что ещё нужно исправить.</p></article>
+        <article class="feature"><div class="feature-icon" aria-hidden="true">?</div><h3>Подсказки постепенно</h3><p>Сначала направление, затем более конкретная помощь. Готовое решение не подменяет самостоятельную работу.</p></article>
+        <article class="feature"><div class="feature-icon" aria-hidden="true">↻</div><h3>Прогресс сохраняется</h3><p>Черновики, проекты и пройденные дни остаются на компьютере. Всё работает без интернета и аккаунта.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="learning" aria-labelledby="learning-title">
+    <div class="container split">
+      <div>
+        <span class="eyebrow">Пиши код с первого дня</span>
+        <h2 id="learning-title">Ошибка становится подсказкой, а не стоп-сигналом</h2>
+        <p class="section-intro">Встроенный редактор подсвечивает Python, помогает с отступами и показывает строку ошибки. Вопросы программы и ответы появляются в живой консоли.</p>
+        <ul class="checklist">
+          <li>Номера строк и подсветка синтаксиса</li>
+          <li>Автоматический переход к ошибочной строке</li>
+          <li>Сохранение файлов проекта между запусками</li>
+          <li>Справочник ошибок простым языком</li>
+        </ul>
+      </div>
+      <div class="screenshot-frame">
+        <div class="screenshot-bar" aria-hidden="true"><i></i><i></i><i></i><span>Редактор Python</span></div>
+        <img src="./assets/editor-error-line.png" alt="Редактор с подсветкой синтаксиса, номерами строк и выделенной ошибочной строкой" width="1475" height="900">
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="screenshots" aria-labelledby="checks-title">
+    <div class="container split reverse">
+      <div class="screenshot-frame">
+        <div class="screenshot-bar" aria-hidden="true"><i></i><i></i><i></i><span>Автопроверка задачи</span></div>
+        <img src="./assets/task-check-success.png" alt="Консоль с успешным результатом автопроверки решения" width="1375" height="850">
+      </div>
+      <div>
+        <span class="eyebrow">Видно, что решение действительно работает</span>
+        <h2 id="checks-title">Не угадал ответ — проверил себя</h2>
+        <p class="section-intro">Для каждой задачи есть отдельные тестовые случаи и три постепенные подсказки. После успешной проверки задача засчитывается автоматически.</p>
+        <ul class="checklist">
+          <li>Разные правильные реализации тоже принимаются</li>
+          <li>Файлы проверяются на сохранение между запусками</li>
+          <li>Рисунки turtle проверяются по командам движения</li>
+          <li>Завершённые задачи автоматически закрывают день</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="android" aria-labelledby="android-title">
+    <div class="container split reverse">
+      <div class="screenshot-frame" style="max-width:320px;margin-inline:auto">
+        <div class="screenshot-bar" aria-hidden="true"><i></i><i></i><i></i><span>Android · главный экран</span></div>
+        <img src="./assets/mobile-home.png" alt="Главный экран мобильного приложения Python для дундриков" width="1080" height="2400">
+      </div>
+      <div>
+        <span class="eyebrow">Теперь и на телефоне</span>
+        <h2 id="android-title">Весь курс Python в твоём Android</h2>
+        <p class="section-intro">Нативное мобильное приложение с теми же 30 днями и 50 задачами. Python, проверки и материалы работают без интернета.</p>
+        <ul class="checklist">
+          <li>Интерактивный редактор и консоль</li>
+          <li>Автопроверки, подсказки и графика turtle</li>
+          <li>Прогресс и проекты хранятся на телефоне</li>
+          <li>Android 7.0 и новее · без рекламы и аккаунта</li>
+        </ul>
+        <div class="hero-actions">
+          <a class="button button-primary" href="./downloads/Python30-Mobile-release.apk" download>Скачать APK</a>
+          <a class="button button-secondary" href="./privacy.html">Конфиденциальность</a>
+        </div>
+        <div class="download-meta">APK, примерно 43 МБ · подписанная релизная версия</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="install-title">
+    <div class="container">
+      <h2 id="install-title">Установка занимает три шага</h2>
+      <p class="section-intro">Административные права и отдельная установка Python не нужны.</p>
+      <div class="steps">
+        <article class="step"><h3>Скачай установщик</h3><p>Один файл <code>Python30_Beta_Setup.exe</code> содержит приложение и все учебные материалы.</p></article>
+        <article class="step"><h3>Запусти мастер</h3><p>Следуй шагам установщика. При желании выбери другую папку и отключи ярлык на рабочем столе.</p></article>
+        <article class="step"><h3>Начни с дня 1</h3><p>Открой приложение через ярлык на рабочем столе или в меню «Пуск» и запусти первую программу.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="download" aria-labelledby="download-title">
+    <div class="container download-box">
+      <div>
+        <h2 id="download-title">Попробуй свою первую программу сегодня</h2>
+        <p>Бета-версия для Windows с полным курсом, 50 задачами, автопроверкой и проектами. Скачивание не требует регистрации.</p>
+        <div class="download-meta">EXE, примерно 15 МБ · прогресс хранится локально · без рекламы и аккаунта</div>
+      </div>
+      <a class="button button-primary" href="./downloads/Python30_Beta_Setup.exe" download>Скачать установщик</a>
+    </div>
+  </section>
+
+  <section class="section" id="faq" aria-labelledby="faq-title">
+    <div class="container">
+      <h2 id="faq-title">Перед первым запуском</h2>
+      <div class="faq">
+        <details><summary>Нужно ли устанавливать Python или VS Code?</summary><p>Нет. Python, редактор, учебник и автопроверки уже встроены в приложение.</p></details>
+        <details><summary>Работает ли курс без интернета?</summary><p>Да. После скачивания и установки все уроки, задачи, справочники и проверки работают офлайн.</p></details>
+        <details><summary>Где остаются мой прогресс и программы?</summary><p>Во внутреннем хранилище приложения на твоём компьютере или телефоне. Они не отправляются на сервер. При удалении Windows-версии прогресс сохраняется; Android удаляет данные вместе с приложением.</p></details>
+        <details><summary>Почему Windows может показать предупреждение?</summary><p>Windows-приложение и установщик пока не имеют цифровой подписи издателя. Скачивай их только из проверенного источника.</p></details>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="container footer-inner">
+    <span>Python для дундриков · бета-версия</span>
+    <a href="./privacy.html">Политика конфиденциальности</a>
+    <span>30 дней · 50 задач · офлайн</span>
+  </div>
+</footer>
+</body>
+</html>
